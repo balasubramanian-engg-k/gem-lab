@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44" aria-hidden="false" role="img">
+    <title>View certificate</title>
+    <!-- card -->
+    <rect x="2" y="4" rx="4" ry="4" width="30" height="24" fill="none" stroke="#000000"/>
+    <!-- inner panel -->
+    <rect x="6" y="7" width="22" height="18" fill="none" stroke="#000000"/>
+    <!-- logo block -->
+    <rect x="8" y="9" width="8" height="6" rx="1" fill="#000000"/>
+    <!-- text lines -->
+    <rect x="18" y="10" width="8" height="2" rx="1" fill="#000000"/>
+    <rect x="18" y="14" width="12" height="2" rx="1" fill="#000000"/>
+    <rect x="8" y="18" width="18" height="1.6" rx="1" fill="#000000"/>
+    <!-- barcode bars -->
+    <g transform="translate(2,4)" fill="#000000">
+      <rect x="0.8" y="0.8" width="1" height="8"/>
+      <rect x="2.4" y="0.8" width="0.6" height="8"/>
+      <rect x="4.0" y="0.8" width="1.2" height="8"/>
+    </g>
+    <!-- magnifier -->
+    <g transform="translate(24,18)">
+      <circle cx="10" cy="10" r="6.5" fill="none" stroke="#000000" stroke-width="1.6"/>
+      <rect x="15.5" y="15.5" width="6" height="1.6" rx="0.8" transform="rotate(45 18.5 16.3)" fill="#000000"/>
+    </g>
+  </svg>

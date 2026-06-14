@@ -1,0 +1,253 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="max-w-7xl mx-auto p-6">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Gems Listing</h1>
+        <a href="http://127.0.0.1:8002/gems/create"
+        class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 hover:scale-105 transition">
+            Add Gem
+        </a>
+    </div>
+    <div id="certificateModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <!-- Modal Content -->
+        <div class="relative max-w-lg w-full bg-white rounded-lg shadow-xl overflow-hidden max-h-[80vh] overflow-y-auto">
+            <!-- Close Button -->
+            <button 
+                onclick="closeModal()" 
+                class="absolute top-2 right-2 z-10 bg-white hover:bg-gray-100 text-gray-600 hover:text-gray-800 rounded-full p-1 shadow-md transition-colors duration-200"
+            >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+
+            <!-- Certificate Content -->
+            <div class="certificate-content">
+        <!-- Header Section -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="px-2 py-1 rounded">
+                        <span class="text-blue-600 font-bold text-lg"><img class="shadow-md max-h-10" src="{{ asset('images/logo.jpg') }}"></a></span>
+                    </div>
+                </div>
+                <div class="bg-white p-1 rounded">
+                    {!! QrCode::size(50)->generate('https://example.com/verify') !!}
+                </div>
+            </div>
+        </div>
+
+        <!-- Identification Report Title -->
+        <div class="bg-gray-100 px-4 py-1 border-b">
+            <h2 class="text-center text-gray-600 font-medium tracking-wide text-sm">
+                — IDENTIFICATION REPORT —
+            </h2>
+        </div>
+
+        <!-- Main Content -->
+        <div class="p-4">
+            <div class="grid grid-cols-3 gap-4">
+                <!-- Left Column - Specifications -->
+                <div class="col-span-2 space-y-2">
+                    <div class="grid grid-cols-2 gap-x-2">
+                        <span class="text-gray-600 font-medium text-xs">SUMMARY NO</span>
+                        <span class="text-gray-900 font-mono text-xs">BEHC829423</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-x-2">
+                        <span class="text-gray-600 font-medium text-xs">Description</span>
+                        <span class="text-gray-900 text-xs">One 22k Gold Necklace Studded With 50 Natural Diamonds</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-x-2">
+                        <span class="text-gray-600 font-medium text-xs">Gross Weight</span>
+                        <span class="text-gray-900 text-xs">34.34 gms</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-x-2">
+                        <span class="text-gray-600 font-medium text-xs">Diamond Weight</span>
+                        <span class="text-gray-900 text-xs">5.96 cts</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-x-2">
+                        <span class="text-gray-600 font-medium text-xs">Color</span>
+                        <span class="text-gray-900 text-xs">E - F</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-x-2">
+                        <span class="text-gray-600 font-medium text-xs">Clarity</span>
+                        <span class="text-gray-900 text-xs">VVS</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-x-2">
+                        <span class="text-gray-600 font-medium text-xs">Finish</span>
+                        <span class="text-gray-900 text-xs">Very Good</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-x-2">
+                        <span class="text-gray-600 font-medium text-xs">Comments</span>
+                        <span class="text-gray-900 text-xs">Jewellery Safe From Synthetic, CVD/HPHT Diamond</span>
+                    </div>
+                </div>
+
+                <!-- Right Column - Image -->
+                <div class="flex items-center justify-center">
+                    <div class="bg-black rounded-lg p-2 w-20 h-20 flex items-center justify-center">
+                        <div class="text-yellow-400 text-2xl">💎</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certificate Footer -->
+        <div class="bg-gray-50 px-4 py-2 text-center">
+            <p class="text-xs text-gray-500 text-xs">
+                This certificate is issued by DHC International Gemlab & Institute
+            </p>
+        </div>
+            </div>
+        </div>
+    </div>
+    <div id="viewModal" class="fixed inset-0 hidden bg-black bg-opacity-50 items-center justify-center z-50">
+  <div class="bg-white rounded-lg p-5 max-w-md w-full shadow-lg relative">
+    <!-- Close Button -->
+    <button onclick="closeModal()" 
+            class="absolute top-0 right-3 text-gray-500 hover:text-red-500 text-xl font-bold">&times;</button>
+
+
+
+    <!-- Gem Details -->
+    <div id="gemDetails" class="text-sm space-y-2 p-4 bg-white rounded-lg shadow border border-gray-200">
+        <p class="justify-between"><strong class="text-gray-700">Summary No:</strong> <span id="summary_no" class="text-gray-500 font-medium"></span></p>
+        <p class="justify-between"><strong class="text-gray-700">Description:</strong> <span id="description" class="text-gray-500 font-medium"></span></p>
+        <p class="justify-between"><strong class="text-gray-700">Gross Weight:</strong> <span id="gross_weight" class="text-gray-500 font-medium"></span></p>
+        <p class="justify-between"><strong class="text-gray-700">Diamond Weight:</strong> <span id="diamond_weight" class="text-gray-500 font-medium"></span></p>
+        <p class="justify-between"><strong class="text-gray-700">Color:</strong> <span id="color" class="text-gray-500 font-medium"></span></p>
+        <p class="justify-between"><strong class="text-gray-700">Clarity:</strong> <span id="clarity" class="text-gray-500 font-medium"></span></p>
+        <p class="justify-between"><strong class="text-gray-700">Finish:</strong> <span id="finish" class="text-gray-500 font-medium"></span></p>
+        <p class="justify-between"><strong class="text-gray-700">Comments:</strong> <span id="comments" class="text-gray-500 font-medium"></span></p>
+        <div class="mt-3">
+            <strong class="text-gray-700 block mb-1">Image:</strong>
+            <img id="image" src="" alt="Gem Image" class="w-40 h-auto rounded shadow border border-gray-300" />
+        </div>
+    </div>
+
+
+    <!-- Close Button -->
+  </div>
+</div>
+    <!-- Table -->
+    <div class="overflow-x-auto bg-white rounded-lg shadow">
+        <table class="min-w-full border border-gray-200">
+            <thead class="bg-gray-100 border-b border-gray-200">
+                <tr>
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Summary No</th>
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Description</th>
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Gross Weight</th>
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Diamond Weight</th>
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Color</th>
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Clarity</th>
+                    <th class="px-4 py-2 text-center text-sm font-semibold text-gray-700">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($gems as $gem)
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ $gem->summary_no }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ $gem->description }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ $gem->gross_weight }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ $gem->diamond_weight }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ $gem->color }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ $gem->clarity }}</td>
+                    <td class="px-4 py-2 text-center space-x-2">
+                        <!-- View -->
+                        <button onclick="viewGem('{{ $gem->id }}')" title="View">
+                            <img src="{{ asset('icons/view-card.svg') }}" class="w-5 h-5 inline-block hover:scale-110 transition">
+                        </button>
+                        <button onclick="viewGem('{{ $gem->id }}')" title="View">
+                            <img src="{{ asset('icons/view.svg') }}" class="w-5 h-5 inline-block hover:scale-110 transition">
+                        </button>
+
+                        <!-- Edit -->
+                        <a href="{{ route('gems.edit', $gem->id) }}" title="Edit">
+                            <img src="{{ asset('icons/edit.svg') }}" class="w-5 h-5 inline-block hover:scale-110 transition">
+                        </a>
+
+                        <!-- Delete -->
+                        <form action="{{ route('gems.destroy', $gem->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" title="Delete">
+                                <img src="{{ asset('icons/delete.svg') }}" class="w-5 h-5 inline-block hover:scale-110 transition">
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="7" class="px-4 py-6 text-center text-gray-500">No gems found.</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-4">
+        {{ $gems->links() }}
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-lg shadow-lg max-w-lg w-full relative">
+        <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+            ✕
+        </button>
+        <div class="p-4">
+            <img id="modalImage" src="" alt="Gem Certificate" class="w-full rounded">
+        </div>
+    </div>
+</div>
+
+<!-- JS for Modal -->
+<script>
+function openModal() {
+  $("#viewModal").removeClass("hidden").addClass("flex");
+}
+
+// Hide modal
+function closeModal() {
+  $("#viewModal").addClass("hidden").removeClass("flex");
+}
+
+// Fetch and display gem details
+function viewGem(id) {
+  $.ajax({
+    url: "/gems/" + id, // Laravel route: Route::get('/get-gem/{id}', ...)
+    method: "GET",
+    dataType: "json",
+    success: function(data) {
+      // Set image
+      $('#summary_no').text(data.summary_no);
+        $('#description').text(data.description);
+        $('#gross_weight').text(data.gross_weight);
+        $('#diamond_weight').text(data.diamond_weight);
+        $('#color').text(data.color);
+        $('#clarity').text(data.clarity);
+        $('#finish').text(data.finish);
+        $('#comments').text(data.comments);
+        $('#image').attr('src', data.image);
+
+      // Show modal
+      openModal();
+    },
+    error: function() {
+      alert("Error fetching gem details.");
+    }
+  });
+}
+</script>
+@endsection
